@@ -10,30 +10,27 @@ rcParams['figure.figsize'] = 8, 16
 
 reader = easyocr.Reader(['en'])
 
+import json
+f = open("env.json")
+data = json.load(f)
 
-import pickle
-# Pkl_Filename = "ocrModel.pkl" 
-# with open(Pkl_Filename, 'wb') as file:  
-#     pickle.dump(reader, file)
-import torch
-# torch.save(reader, "Pickle_RL_Model.h5")
+for i in data["data"]:
+    dir_file = i["dir"]
+    count_data = int(i["count"])
+    file_to_scan = i["file_to_scan"]
+f.close
 
-# the_model = torch.load("Pickle_RL_Model.h5")
-# the_model
+for file_name in os.listdir(dir_file):
 
-import os
-
-for file_name in os.listdir("E:/IntechHub Solution/modelOCR/"):
-  
-    if file_name.split(".")[-1].lower() in {"jpeg", "jpg", "png"}:
+    if file_name.split(".")[-1].lower() in file_to_scan:
         output = reader.readtext(file_name)
         count = 0
         for detection in output:
           text = detection[1]
           count += len(re.findall(r'\w+', text))
-          if count > 70:
+          if count > (count_data+10):
             break
-        if count < 60:
+        if count < count_data:
           img = cv2.imread(file_name)
           for detection in output:
             top_left = tuple([int(val) for val in detection[0][0]])
