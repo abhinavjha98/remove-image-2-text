@@ -1,4 +1,4 @@
-import torch
+
 import matplotlib.pyplot as plt
 import cv2
 import easyocr
