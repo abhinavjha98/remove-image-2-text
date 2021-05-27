@@ -4,11 +4,11 @@ import easyocr
 from pylab import rcParams
 import re
 import shutil, os
-
+import time
 rcParams['figure.figsize'] = 8, 16
-
+img_names = []
 reader = easyocr.Reader(['en'])
-
+t1 = time.perf_counter()
 import json
 f = open("env.json")
 data = json.load(f)
@@ -54,3 +54,5 @@ for file_name in os.listdir(dir_file):
             pass
           
 
+t2 = time.perf_counter()
+print(f'Finished in {t2-t1} seconds')
