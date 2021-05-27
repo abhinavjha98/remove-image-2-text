@@ -15,7 +15,6 @@ data = json.load(f)
 
 for i in data["data"]:
     dir_file = i["dir"]
-    count_data = int(i["count"])
     file_to_scan = i["file_to_scan"]
 f.close
 
@@ -27,9 +26,9 @@ for file_name in os.listdir(dir_file):
         for detection in output:
           text = detection[1]
           count += len(re.findall(r'\w+', text))
-          if count > (count_data+10):
+          if count > (400+10):
             break
-        if count < count_data:
+        if count < 400:
           img = cv2.imread(file_name)
           for detection in output:
             top_left = tuple([int(val) for val in detection[0][0]])
@@ -43,12 +42,14 @@ for file_name in os.listdir(dir_file):
           cv2.imwrite("images/"+new_file_name, img)
           try:
             shutil.move(file_name,'images/')
+            print("Successfully changed the image")
           except:
             pass
           
         else:
           try:
             shutil.move(file_name,'documents/')
+            print("Successfully changed the document")
           except:
             pass
           

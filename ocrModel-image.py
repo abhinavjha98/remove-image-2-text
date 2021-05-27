@@ -35,6 +35,7 @@ for file_name in os.listdir(dir_file):
         file_names = file_name.split(".")
         new_file_name = "updated_"+file_names[0]+"."+file_names[1]
         cv2.imwrite("images/"+new_file_name, img)
+        print("Successfully changed the image")
         try:
           shutil.move(file_name,'images/')
         except:
