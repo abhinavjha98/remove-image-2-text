@@ -1,14 +1,12 @@
 import matplotlib.pyplot as plt
 import cv2
 import easyocr
-from pylab import rcParams
 import re
 import shutil, os
 import time
-rcParams['figure.figsize'] = 8, 16
 img_names = []
 reader = easyocr.Reader(['en'])
-t1 = time.perf_counter()
+
 import json
 f = open("env.json")
 data = json.load(f)
@@ -17,9 +15,10 @@ for i in data["data"]:
     dir_file = i["dir"]
     file_to_scan = i["file_to_scan"]
 f.close
+second_file = ["pdf","tif"]
 
 for file_name in os.listdir(dir_file):
-
+    t1 = time.perf_counter()
     if file_name.split(".")[-1].lower() in file_to_scan:
         output = reader.readtext(file_name)
         count = 0

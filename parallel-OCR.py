@@ -1,14 +1,13 @@
 import matplotlib.pyplot as plt
 import cv2
 import easyocr
-from pylab import rcParams
 import re
 import shutil, os
 import concurrent.futures
 import json
 import time
-
-rcParams['figure.figsize'] = 8, 16
+import pdf2image
+from pdf2image import convert_from_path
 img_names = []
 reader = easyocr.Reader(['en'])
 
@@ -21,15 +20,18 @@ for i in data["data"]:
     file_to_scan = i["file_to_scan"]
 f.close
 
+second_file = ["pdf","tif"]
 for file_name in os.listdir(dir_file):
   t1 = time.perf_counter()
   if file_name.split(".")[-1].lower() in file_to_scan:
     img_names.append(file_name)
 
-print(img_names)
-
-
 def process_image(file_name):
+    # if file_name.split(".")[1] in second_file:
+    #   images = convert_from_path(file_name)
+    #   for i in range(len(images)):
+    #     images[i].save(file_name.split(".")[0]+'_page_'+ str(i) +'.jpg', 'JPEG')
+    #     process_image(file_name.split(".")[0]+'_page_'+ str(i) +'.jpg')
     output = reader.readtext(file_name)
     count = 0
     for detection in output:
@@ -37,7 +39,7 @@ def process_image(file_name):
       count += len(re.findall(r'\w+', text))
       if count > (400+10):
         break
-    if count < 400:
+    if count < 105:
       img = cv2.imread(file_name)
       for detection in output:
         top_left = tuple([int(val) for val in detection[0][0]])
@@ -65,5 +67,14 @@ def process_image(file_name):
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
     executor.map(process_image, img_names)
+
+
+# for file_name in os.listdir(dir_file):
+#   if file_name.split(".")[-1].lower() in second_file:
+#     try:
+#         shutil.move(file_name,'pdf/')
+#         print("Successfully changed the document")
+#     except:
+#         pass
 t2 = time.perf_counter()
 print(f'Finished in {t2-t1} seconds')
