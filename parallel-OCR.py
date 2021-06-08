@@ -37,6 +37,7 @@ def process_image(file_name):
     for detection in output:
       text = detection[1]
       count += len(re.findall(r'\w+', text))
+      
       if count > (400+10):
         break
     if count < 105:

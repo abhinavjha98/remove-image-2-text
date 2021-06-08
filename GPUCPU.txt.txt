@@ -1,0 +1,15 @@
+GPU - Big image time - 4 to 5 sec
+CPU - Big image  time - 20 sec to 35 sec
+Previous model(CPU) - Big image time - 35 sec to 50 sec
+
+GPU - Blur image time - 5 to 7 sec
+CPU - Blur image time - 25 sec to 40 sec
+Previous model(CPU) - Blur image time - 45 sec to 55 sec
+
+GPU - Medium and small image - 2 sec to 3 sec
+CPU - Medium and small image - 10 sec to 15 sec
+Previous model(CPU) - Medium and small image - 20 sec to 35 sec
+
+Parallel Model(CPU) - 25 sec for n cores (Eg: Suppose we have 8 images and we have 6 core So first 6 image will process in 25 sec then other two
+will process on 25 sec)
+Parallel Model(GPU) - 5 sec for n cores

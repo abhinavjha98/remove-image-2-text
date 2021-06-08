@@ -16,16 +16,16 @@ for i in data["data"]:
     file_to_scan = i["file_to_scan"]
 f.close
 second_file = ["pdf","tif"]
-
+t1 = time.perf_counter()
 for file_name in os.listdir(dir_file):
-    t1 = time.perf_counter()
+    
     if file_name.split(".")[-1].lower() in file_to_scan:
         output = reader.readtext(file_name)
         count = 0
         for detection in output:
           text = detection[1]
           count += len(re.findall(r'\w+', text))
-          if count > (400+10):
+          if count > (100+10):
             break
         if count < 400:
           img = cv2.imread(file_name)
@@ -38,7 +38,10 @@ for file_name in os.listdir(dir_file):
           new_file = file_name
           file_names = file_name.split(".")
           new_file_name = "updated_"+file_names[0]+"."+file_names[1]
-          cv2.imwrite("images/"+new_file_name, img)
+          try:
+            cv2.imwrite("images/"+new_file_name, img)
+          except:
+            pass
           try:
             shutil.move(file_name,'images/')
             print("Successfully changed the image")
